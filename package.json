@@ -1,0 +1,27 @@
+{
+  "name": "graphql-dynamodb-pt1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {
+    "apollo-server-lambda": "^2.17.0",
+    "aws-sdk": "^2.748.0",
+    "dynamoose": "^2.3.0",
+    "graphql": "^15.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "serverless": "^1.82.0",
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-localstack": "^0.4.27",
+    "serverless-offline": "6.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon --exec npm run offline",
+    "offline": "npx sls offline start --host 0.0.0.0 --stage local"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
