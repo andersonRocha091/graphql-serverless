@@ -26,8 +26,8 @@ package:
 
 plugins:
   - serverless-dynamodb-local
+  - serverless-localstack
   - serverless-offline
-  # - serverless-localstack
 
 custom:
   localstack:

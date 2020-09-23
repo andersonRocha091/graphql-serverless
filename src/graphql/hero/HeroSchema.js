@@ -1,10 +1,15 @@
 const typeDefinition = `
+  type Hero{
+    id: String,
+    name: String,
+    skills:[String]
+  }
   type Query {
-    getHero: String
+    getHero(id:String, name:String): [Hero]
   }
 
   type Mutation {
-    createHero: String
+    createHero(name: String!, skills:[String]!): String
   }
 `;
 

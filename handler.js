@@ -24,6 +24,10 @@ const schema = require("./src/graphql");
 
 const settings = {
   schema,
+  context: async () => ({
+    Hero: await HeroFactory.createInstance(),
+    Skill: await SkillFactory.createInstance(),
+  }),
   //permitir execucao no frontend e obtenção dos schemas
   introspection: isLocal,
   //frontend
@@ -37,22 +41,46 @@ const settings = {
     console.log("[Global logger]", response);
     return response;
   },
-  // graphql: {
-  //   settings: {
-  //     ["request.credentials"]: "same-origin",
-  //   },
-  // },
+  graphql: {
+    settings: {
+      ["request.credentials"]: "same-origin",
+    },
+  },
 };
 
-const server = new ApolloServer(settings);
+function runApollo(event, context, apollo) {
+  return new Promise((resolve, reject) => {
+    const callback = (error, body) => (error ? reject(error) : resolve(body));
+    apollo(event, context, callback);
+  });
+}
+async function main(event, context, cb) {
+  const server = new ApolloServer(settings);
 
-exports.graphqlHandler = server.createHandler({
-  cors: {
-    origin: "*",
-    // credentials: false,
-  },
-  endpointURL: "/graphql",
-});
+  const apollo = server.createHandler({
+    cors: {
+      origin: "*",
+      credentials: true,
+    },
+  });
+
+  // HERE IS WHERE YOU BACKFILL THE HEADERS
+  event.httpMethod = event.httpMethod || "POST";
+  event.headers = {
+    "content-type": "application/json",
+    ...(event.headers || {}),
+  };
+  // END BACKFILL
+
+  try {
+    const response = await runApollo(event, context, apollo);
+    return response;
+  } catch (err) {
+    cb(err, null);
+  }
+}
+
+module.exports.graphqlHandler = main;
 
 // async function main() {
 //   console.log("creating factories...");

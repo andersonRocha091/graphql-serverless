@@ -2,13 +2,14 @@ const resolvers = {
   //GET
   Query: {
     async getHero(root, args, context, info) {
-      return "Hello World!";
+      return context.Hero.findAll(args);
     },
   },
   //POST (atualizacao, cadastro, remocao)
   Mutation: {
     async createHero(root, args, context, info) {
-      return "Hello World!";
+      const { id } = await context.Hero.create(args);
+      return id;
     },
   },
 };

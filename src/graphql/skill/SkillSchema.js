@@ -1,10 +1,15 @@
 const typeDefinition = `
+  type Skill{
+    id: String,
+    name: String,
+    value:Int
+  }
   type Query {
-    getSkill: String
+    getSkill(id:String, name:String, value: Int): [Skill]
   }
 
   type Mutation {
-    createSkill: String
+    createSkill(name: String!,value:Int): String
   }
 `;
 

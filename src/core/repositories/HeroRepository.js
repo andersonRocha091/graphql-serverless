@@ -1,7 +1,7 @@
-const BaseRpository = require("./BaseRepositorie");
+const BaseRepository = require("./BaseRepositorie");
 const schema = require("./schemas/HeroSchema");
 
-class HeroRepository extends BaseRpository {
+class HeroRepository extends BaseRepository {
   constructor() {
     super({ schema });
   }
